@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_BACKEND_URL || 'https://fitness-app-backend-navy.vercel.app/api',
   withCredentials: true,
 });
 
