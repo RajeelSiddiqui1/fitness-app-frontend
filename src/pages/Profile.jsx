@@ -30,6 +30,13 @@ import { useTheme } from "../contexts/ThemeContext";
 import { useAuth } from "../contexts/AuthContext";
 import { axiosInstance } from "../lib/axios";
 
+// Get gender-based default avatar
+const getDefaultAvatar = (gender) => {
+  const avatarBaseUrl = import.meta.env.VITE_AVATAR_PLACEHOLDER_URL || 'https://avatar-placeholder.iran.liara.run/avatars/';
+  const genderKey = gender?.toLowerCase() || 'male';
+  return `${avatarBaseUrl}?gender=${genderKey}`;
+};
+
 const Profile = ({ onNavigate }) => {
   const navigate = useNavigate();
   const { theme } = useTheme();
@@ -285,22 +292,27 @@ const Profile = ({ onNavigate }) => {
                         src={
                           avatarPreview.startsWith("data:")
                             ? avatarPreview
-                            : `http://localhost:5000/${avatarPreview}`
+                            : `https://fitness-app-backend-navy.vercel.app/${avatarPreview}`
                         }
                         alt={authUser?.userName}
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = ""; // Fallback to default
+                          e.target.style.display = 'none';
+                          e.target.parentElement.innerHTML = `<div class="w-full h-full flex items-center justify-center text-4xl font-bold text-white" style="background: ${theme.gradient}">${authUser?.userName?.charAt(0).toUpperCase()}</div>`;
                         }}
                       />
                     ) : (
-                      <div
-                        className="w-full h-full flex items-center justify-center text-4xl font-bold text-white"
-                        style={{ background: theme.gradient }}
-                      >
-                        {authUser?.userName?.charAt(0).toUpperCase()}
-                      </div>
+                      <img
+                        src={getDefaultAvatar(authUser?.gender)}
+                        alt={authUser?.userName}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.style.display = 'none';
+                          e.target.parentElement.innerHTML = `<div class="w-full h-full flex items-center justify-center text-4xl font-bold text-white" style="background: ${theme.gradient}">${authUser?.userName?.charAt(0).toUpperCase()}</div>`;
+                        }}
+                      />
                     )}
                   </div>
 
@@ -459,11 +471,7 @@ const Profile = ({ onNavigate }) => {
                           }}
                         />
                       </div>
-                      {!editMode && (
-                        <p className="text-xs mt-1 text-yellow-500">
-                          Email cannot be edited
-                        </p>
-                      )}
+                      
                     </div>
 
                     {/* Age & Gender */}

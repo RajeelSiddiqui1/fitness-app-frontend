@@ -21,6 +21,13 @@ import FollowingModal from '../components/FollowingModal';
 import { axiosInstance } from '../lib/axios';
 import { useAuth } from '../contexts/AuthContext';
 
+// Get gender-based default avatar
+const getDefaultAvatar = (gender) => {
+  const avatarBaseUrl = import.meta.env.VITE_AVATAR_PLACEHOLDER_URL || 'https://avatar-placeholder.iran.liara.run/avatars/';
+  const genderKey = gender?.toLowerCase() || 'male';
+  return `${avatarBaseUrl}?gender=${genderKey}`;
+};
+
 const UserProfile = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
@@ -175,17 +182,26 @@ const UserProfile = () => {
             >
               {user.avatar ? (
                 <img 
-                  src={`http://localhost:5000/${user.avatar}`}
+                  src={`https://fitness-app-backend-navy.vercel.app/${user.avatar}`}
                   alt={user.userName}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.style.display = 'none';
+                    e.target.parentElement.innerHTML = `<img src="${getDefaultAvatar(user.gender)}" alt="${user.userName}" class="w-full h-full object-cover" />`;
+                  }}
                 />
               ) : (
-                <div 
-                  className="w-full h-full flex items-center justify-center text-4xl font-bold text-white"
-                  style={{ background: 'var(--theme-gradient)' }}
-                >
-                  {user.userName?.charAt(0).toUpperCase()}
-                </div>
+                <img 
+                  src={getDefaultAvatar(user.gender)}
+                  alt={user.userName}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.style.display = 'none';
+                    e.target.parentElement.innerHTML = `<div class="w-full h-full flex items-center justify-center text-4xl font-bold text-white" style="background: var(--theme-gradient)">${user.userName?.charAt(0).toUpperCase()}</div>`;
+                  }}
+                />
               )}
             </div>
 

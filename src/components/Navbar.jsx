@@ -24,6 +24,13 @@ const iconMap = {
   Home,
 };
 
+// Get gender-based default avatar
+const getDefaultAvatar = (gender) => {
+  const avatarBaseUrl = import.meta.env.VITE_AVATAR_PLACEHOLDER_URL || 'https://avatar-placeholder.iran.liara.run/avatars/';
+  const genderKey = gender?.toLowerCase() || 'male'; // default to male
+  return `${avatarBaseUrl}?gender=${genderKey}`;
+};
+
 const Navbar = ({ onToggleMobileMenu, mobileMenuOpen, onNavigate, currentPage, menuItems }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -265,7 +272,7 @@ const Navbar = ({ onToggleMobileMenu, mobileMenuOpen, onNavigate, currentPage, m
               }}
             >
               <div 
-                className="w-8 h-8 rounded-full flex items-center justify-center"
+                className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden"
                 style={{ 
                   background: 'var(--theme-gradient)',
                   color: 'white'
@@ -273,12 +280,26 @@ const Navbar = ({ onToggleMobileMenu, mobileMenuOpen, onNavigate, currentPage, m
               >
                 {user?.avatar ? (
                   <img 
-                    src={`http://localhost:5000/${user.avatar}`}
+                    src={`https://fitness-app-backend-navy.vercel.app/${user.avatar}`}
                     alt={userName}
-                    className="w-full h-full rounded-full object-cover"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.style.display = 'none';
+                      e.target.parentElement.innerHTML = userName.charAt(0).toUpperCase();
+                    }}
                   />
                 ) : (
-                  <User size={18} />
+                  <img 
+                    src={getDefaultAvatar(user?.gender)}
+                    alt={userName}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.style.display = 'none';
+                      e.target.parentElement.innerHTML = userName.charAt(0).toUpperCase();
+                    }}
+                  />
                 )}
               </div>
               <span className="hidden md:block text-sm font-medium" style={{ color: 'var(--theme-text)' }}>

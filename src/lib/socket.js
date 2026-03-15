@@ -1,6 +1,7 @@
 import { io } from 'socket.io-client';
 
-const SOCKET_URL = 'http://localhost:5000';
+// Use environment variable for socket URL, empty string disables socket
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'https://fitness-app-backend-navy.vercel.app';
 
 let socket = null;
 
@@ -10,10 +11,18 @@ let socket = null;
  * @returns {object} - The socket instance
  */
 export const initSocket = (userId) => {
+  // Don't initialize if no socket URL configured
+  if (!SOCKET_URL) {
+    console.log('Socket disabled - no VITE_SOCKET_URL configured');
+    return null;
+  }
+  
   if (!socket) {
     socket = io(SOCKET_URL, {
       withCredentials: true,
       transports: ['websocket', 'polling'],
+      reconnectionAttempts: 3,
+      reconnectionDelay: 1000,
     });
 
     socket.on('connect', () => {
@@ -29,7 +38,7 @@ export const initSocket = (userId) => {
     });
 
     socket.on('connect_error', (error) => {
-      console.error('Socket connection error:', error);
+      console.log('Socket connection error (this is normal if no server):', error.message);
     });
   } else if (userId) {
     // Rejoin if socket exists but with new user
