@@ -285,18 +285,10 @@ const NotificationPanel = ({ isOpen, onClose, onViewAllClick, onNotificationCoun
                   <div className="flex gap-3">
                     {/* Avatar/Icon */}
                     <div className="relative flex-shrink-0">
-                      {notification.sender?.id?.avatar ? (
-                        <img 
-                          src={`http://localhost:5000/${notification.sender.id.avatar}`}
-                          alt={notification.sender.name}
-                          className="w-10 h-10 rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center"
-                             style={{ background: 'var(--theme-gradient)' }}>
-                          {notification.sender?.name?.charAt(0).toUpperCase() || 'U'}
-                        </div>
-                      )}
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center"
+                           style={{ background: 'var(--theme-gradient)' }}>
+                        {notification.sender?.name?.charAt(0).toUpperCase() || 'U'}
+                      </div>
                       <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center"
                            style={{ border: '2px solid var(--theme-bg)' }}>
                         {getNotificationIcon(notification.type)}

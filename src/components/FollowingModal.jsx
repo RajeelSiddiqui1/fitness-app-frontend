@@ -94,20 +94,10 @@ const FollowingModal = ({ isOpen, onClose, userId }) => {
                       navigate(`/user/${user._id}`);
                     }}
                   >
-                    <div className="w-10 h-10 rounded-full overflow-hidden">
-                      {user.avatar ? (
-                        <img 
-                          src={`http://localhost:5000/${user.avatar}`} 
-                          alt={user.userName} 
-                          className="w-full h-full object-cover" 
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-sm font-bold text-white"
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white"
                              style={{ background: 'var(--theme-gradient)' }}>
                           {user.userName?.charAt(0).toUpperCase()}
                         </div>
-                      )}
-                    </div>
                     <div>
                       <p className="font-medium">{user.userName}</p>
                       <div className="flex items-center gap-1 text-xs opacity-60">

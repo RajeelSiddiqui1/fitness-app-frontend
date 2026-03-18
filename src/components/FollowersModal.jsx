@@ -131,20 +131,10 @@ const FollowersModal = ({ isOpen, onClose, userId }) => {
                         navigate(`/user/${follower._id}`);
                       }}
                     >
-                      <div className="w-10 h-10 rounded-full overflow-hidden">
-                        {follower.avatar ? (
-                          <img 
-                            src={`http://localhost:5000/${follower.avatar}`} 
-                            alt={follower.userName} 
-                            className="w-full h-full object-cover" 
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-sm font-bold text-white"
-                               style={{ background: 'var(--theme-gradient)' }}>
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white"
+                             style={{ background: 'var(--theme-gradient)' }}>
                             {follower.userName?.charAt(0).toUpperCase()}
                           </div>
-                        )}
-                      </div>
                       <div>
                         <p className="font-medium">{follower.userName}</p>
                         <div className="flex items-center gap-1 text-xs opacity-60">
