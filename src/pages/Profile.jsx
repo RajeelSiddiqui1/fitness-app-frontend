@@ -316,25 +316,7 @@ const Profile = ({ onNavigate }) => {
                     )}
                   </div>
 
-                  {editMode && (
-                    <label
-                      htmlFor="avatar-upload"
-                      className="absolute bottom-0 right-0 p-2 rounded-full cursor-pointer transition-all hover:scale-110"
-                      style={{
-                        background: "var(--theme-primary)",
-                        color: "white",
-                      }}
-                    >
-                      <Camera size={16} />
-                      <input
-                        type="file"
-                        id="avatar-upload"
-                        accept="image/*"
-                        onChange={handleAvatarChange}
-                        className="hidden"
-                      />
-                    </label>
-                  )}
+                 
                 </div>
 
                 <h2
